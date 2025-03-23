@@ -1,0 +1,54 @@
+.profile-page__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px;
+}
+
+.to-settings-btn {
+  width: 190px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.to-settings-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--dark-color);
+}
+
+.profile-page-body {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 64px;
+  padding: 24px;
+}
+
+img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+
+.profile-page-body__subscribers {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.to-subscribers-search {
+  background-color: white;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  top: -2px;
+}
+
+.profile-page-body__skills {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}

@@ -1,5 +1,5 @@
 <div class="profile-card__wrapper">
-  @for(profile of profiles; track profile.id){
+  @for(profile of profiles | async; track profile.id){
   <app-profile-card [profile]="profile"></app-profile-card>
   }
 </div>

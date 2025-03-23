@@ -1,1 +1,49 @@
-<p>profile-page works!</p>
+@if(profile$ | async; as profile){
+<header class="profile-page__header">
+  <app-profile-header [profile]="profile"></app-profile-header>
+
+  <a class="btn to-settings-btn" [routerLink]="['/settings']">
+    Редактировать <svg icon="settings" class="to-settings-icon"></svg>
+  </a>
+</header>
+
+<main class="profile-page-body">
+  <app-post-feed></app-post-feed>
+
+  <div>
+    <div>
+      <h3 class="mb16">Подписчики</h3>
+      <div class="profile-page-body__subscribers mb32">
+        @for(subscriber of subscribers$ | async; track subscriber.id){
+        <a [routerLink]="['/profile', subscriber.id]">
+          <img
+            [src]="subscriber.avatarUrl | imgUrl"
+            [alt]="subscriber.lastName"
+        /></a>
+        }
+        <a class="to-subscribers-search" [routerLink]="['/search']"></a>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="mb16">Навыки</h3>
+      <div class="profile-page-body__skills mb32">
+        @for(skill of profile.stack; track skill){
+        <div class="skill-tag">{{ skill }}</div>
+        }
+      </div>
+    </div>
+
+    <div>
+      <h3 class="mb16">О себе</h3>
+      <p>
+        {{ profile.description }}
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora sequi,
+        illum voluptatum, magnam dolores asperiores recusandae incidunt, dolorum
+        ex tenetur soluta delectus laudantium sint. Aperiam illo nemo natus ipsa
+        magnam.
+      </p>
+    </div>
+  </div>
+</main>
+}
