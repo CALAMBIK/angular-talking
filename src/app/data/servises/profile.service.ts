@@ -13,6 +13,8 @@ export class ProfileService {
 
   public me = signal<Profile | null>(null);
 
+  public filteredProfiles = signal<Profile[]>([]);
+
   public me$ = new BehaviorSubject<Profile | null>(null);
 
   public get(): Observable<Profile[]> {
@@ -50,5 +52,11 @@ export class ProfileService {
       `${this.baseApiUrl}account/upload_image`,
       fd
     );
+  }
+
+  public filterProfiles(params: Record<string, any>) {
+    return this.http
+      .get<Pageble<Profile>>(`${this.baseApiUrl}account/accounts`, { params })
+      .pipe(tap((res) => this.filteredProfiles.set(res.items)));
   }
 }

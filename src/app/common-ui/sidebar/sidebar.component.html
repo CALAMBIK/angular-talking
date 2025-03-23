@@ -3,7 +3,11 @@
 <nav class="mb20">
   <ul class="main-menu-list">
     <li *ngFor="let item of menuItems">
-      <a class="menu-item" [routerLink]="[item.link]">
+      <a
+        class="menu-item"
+        [routerLink]="[item.link]"
+        routerLinkActive="router-link-active"
+      >
         <svg [icon]="item.icon"></svg>
         <span>{{ item.label }}</span>
       </a>

@@ -13,8 +13,9 @@ export const routes: Routes = [
         (c) => c.LayoutComponent
       ),
     children: [
+      { path: '', redirectTo: 'profile/me', pathMatch: 'full' },
       {
-        path: '',
+        path: 'search',
         loadComponent: () =>
           import('./pages/search-page/search-page.component').then(
             (c) => c.SearchPageComponent
