@@ -8,10 +8,32 @@ import { authGuard } from './auth/auth.guard';
 export const routes: Routes = [
   {
     path: '',
-    component: LayoutComponent,
+    loadComponent: () =>
+      import('./common-ui/layout/layout.component').then(
+        (c) => c.LayoutComponent
+      ),
     children: [
-      { path: '', component: SearchPageComponent },
-      { path: 'profile/:id', component: ProfilePageComponent },
+      {
+        path: '',
+        loadComponent: () =>
+          import('./pages/search-page/search-page.component').then(
+            (c) => c.SearchPageComponent
+          ),
+      },
+      {
+        path: 'profile/:id',
+        loadComponent: () =>
+          import('./pages/profile-page/profile-page.component').then(
+            (c) => c.ProfilePageComponent
+          ),
+      },
+      {
+        path: 'settings',
+        loadComponent: () =>
+          import('./pages/settings-page/settings-page.component').then(
+            (c) => c.SettingsPageComponent
+          ),
+      },
     ],
     canActivate: [authGuard],
   },

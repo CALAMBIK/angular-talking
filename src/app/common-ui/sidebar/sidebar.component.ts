@@ -27,7 +27,7 @@ export class SidebarComponent implements OnInit {
   public me = this.profileService.me;
 
   public menuItems = [
-    { label: 'Моя страница', icon: 'home', link: '' },
+    { label: 'Моя страница', icon: 'home', link: 'profile/me' },
     { label: 'Чаты', icon: 'chats', link: 'chats' },
     { label: 'Поиск', icon: 'search', link: 'search' },
   ];

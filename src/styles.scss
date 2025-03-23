@@ -97,3 +97,37 @@ h4 {
   font-size: 14px;
   line-height: 21px;
 }
+
+.tt-form-input {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  border: none;
+  border-bottom: 1px solid var(--light-color);
+  background: none;
+  height: 33px;
+  color: var(--light-color);
+  box-sizing: border-box;
+  padding: 0px 5px;
+
+  &:focus-visible {
+    outline: 1px solid var(--primary-color);
+  }
+}
+
+.tt-form-label {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tt-form-label__text {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.tt-textarea {
+  height: 84px;
+  resize: none;
+}
