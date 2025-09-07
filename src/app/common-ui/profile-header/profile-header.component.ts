@@ -1,6 +1,7 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { Profile } from '../../data/models/profile.model';
 import { ImgUrlPipe } from '../../helpers/pipes/img-url.pipe';
+import { ProfileService } from '../../data/servises/profile.service';
 
 @Component({
   selector: 'app-profile-header',
@@ -10,4 +11,6 @@ import { ImgUrlPipe } from '../../helpers/pipes/img-url.pipe';
 })
 export class ProfileHeaderComponent {
   public profile = input<Profile>();
+
+  private profileService = inject(ProfileService);
 }

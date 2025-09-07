@@ -8,7 +8,7 @@ import { ProfileFiltersComponent } from './profile-filters/profile-filters.compo
 
 @Component({
   selector: 'app-search-page',
-  imports: [ProfileCardComponent, AsyncPipe, ProfileFiltersComponent],
+  imports: [ProfileCardComponent, ProfileFiltersComponent],
   templateUrl: './search-page.component.html',
   styleUrl: './search-page.component.scss',
 })

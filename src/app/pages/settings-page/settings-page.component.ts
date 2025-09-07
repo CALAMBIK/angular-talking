@@ -16,7 +16,7 @@ export class SettingsPageComponent {
   @ViewChild(AvatarUploadComponent) avaterUploader!: AvatarUploadComponent;
 
   private readonly fb = inject(FormBuilder);
-  private readonly profileService = inject(ProfileService);
+  public readonly profileService = inject(ProfileService);
 
   public formSettings = this.fb.group({
     firstName: ['', Validators.required],
@@ -27,19 +27,10 @@ export class SettingsPageComponent {
   });
 
   constructor() {
-    this.profileService.me$.subscribe((profile) => {
-      if (profile) {
-        //@ts-ignore
-        this.formSettings.patchValue({
-          ...profile,
-          stack: this.mergeStack(profile?.stack),
-        });
-      }
+    effect(() => {
+      //@ts-ignore
+      this.formSettings.patchValue(this.profileService.me());
     });
-    // effect(() => {
-    //   //@ts-ignore
-    //   this.formSettings.patchValue(this.profileService.me());
-    // });
   }
 
   public onSave() {

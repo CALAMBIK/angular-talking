@@ -1,7 +1,7 @@
 .profile-page__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 64px;
   padding: 24px;
 }
 
@@ -10,7 +10,9 @@
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 35px;
+  height: 45px;
+  margin-top: 50px;
 }
 
 .to-settings-icon {
@@ -39,12 +41,30 @@ img {
 }
 
 .to-subscribers-search {
-  background-color: white;
   border-radius: 50%;
-  width: 16px;
-  height: 16px;
+  background: var(--light-color);
+  width: 14px;
+  height: 14px;
   position: relative;
-  top: -2px;
+
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    width: 1px;
+    height: 8px;
+    background: var(--dark-color);
+    top: 50%;
+    left: 50%;
+  }
+
+  &:before {
+    transform: translateY(-50%) translateX(-50%);
+  }
+
+  &:after {
+    transform: translateY(-50%) translateX(-50%) rotate(90deg);
+  }
 }
 
 .profile-page-body__skills {

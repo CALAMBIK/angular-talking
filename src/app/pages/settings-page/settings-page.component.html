@@ -1,4 +1,6 @@
-<app-profile-header></app-profile-header>
+@if(profileService.me(); as profile){
+<app-profile-header [profile]="profile"></app-profile-header>
+}
 
 <form [formGroup]="formSettings" class="profile-form__wraper">
   <div class="profile-form">
