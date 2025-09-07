@@ -1,8 +1,5 @@
-@if(profile(); as profile){ @if(profile.avatarUrl){
-<img [src]="profile.avatarUrl | imgUrl" [alt]="profile.lastName" />
-}@else {
-<img src="assets/imgs/default.png" [alt]="profile.lastName" />
-}
+@if(profile(); as profile){
+<app-avatar-circle [avatarUrl]="profile.avatarUrl"></app-avatar-circle>
 <div class="username-and-name">
   <h4 class="mb4">{{ profile.firstName }} {{ profile.lastName }}</h4>
   <span class="regular">{{ profile.username }}</span>

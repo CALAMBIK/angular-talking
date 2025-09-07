@@ -8,7 +8,7 @@ import { Pageble } from '../models/pageble.model';
   providedIn: 'root',
 })
 export class ProfileService {
-  baseApiUrl = 'https://icherniakov.ru/yt-course/';
+  private baseApiUrl = 'https://icherniakov.ru/yt-course/';
   private readonly http = inject(HttpClient);
 
   public me = signal<Profile | null>(null);
@@ -16,10 +16,6 @@ export class ProfileService {
   public filteredProfiles = signal<Profile[]>([]);
 
   public me$ = new BehaviorSubject<Profile | null>(null);
-
-  // public get(): Observable<Profile[]> {
-  //   return this.http.get<Profile[]>(`${this.baseApiUrl}account/test_accounts`);
-  // }
 
   public getMe(): Observable<Profile> {
     return this.http.get<Profile>(`${this.baseApiUrl}account/me`).pipe(

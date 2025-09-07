@@ -1,0 +1,17 @@
+:host {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 16px;
+}
+
+.comment-body {
+  display: grid;
+  grid-gap: 8px;
+  padding-right: 10px;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

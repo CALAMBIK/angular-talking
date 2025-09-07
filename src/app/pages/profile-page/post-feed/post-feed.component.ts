@@ -1,6 +1,16 @@
-import { Component } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostBinding,
+  HostListener,
+  inject,
+  Renderer2,
+} from '@angular/core';
 import { PostInputComponent } from '../post-input/post-input.component';
 import { PostComponent } from '../post/post.component';
+import { PostService } from '../../../data/servises/post.service';
 
 @Component({
   selector: 'app-post-feed',
@@ -8,4 +18,32 @@ import { PostComponent } from '../post/post.component';
   templateUrl: './post-feed.component.html',
   styleUrl: './post-feed.component.scss',
 })
-export class PostFeedComponent {}
+export class PostFeedComponent implements AfterViewInit {
+  private readonly postService = inject(PostService);
+
+  public feed = this.postService.posts;
+
+  private readonly hostElement = inject(ElementRef);
+
+  private readonly r2 = inject(Renderer2);
+
+  @HostListener('window:resize') onWindowResize() {
+    this.resizeFeed();
+  }
+
+  constructor() {
+    firstValueFrom(this.postService.fetchPosts());
+  }
+
+  ngAfterViewInit(): void {
+    this.resizeFeed();
+  }
+
+  resizeFeed() {
+    const { top } = this.hostElement.nativeElement.getBoundingClientRect();
+
+    const height = window.innerHeight - top - 24 - 24;
+
+    this.r2.setStyle(this.hostElement.nativeElement, 'height', `${height}px`);
+  }
+}
