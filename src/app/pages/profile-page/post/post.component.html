@@ -7,9 +7,7 @@
   <div class="post-header">
     <strong class="post__author"
       >{{ post.author.firstName }} {{ post.author.lastName }}
-      <span class="post-created-at">{{
-        post.createdAt | date : "HH:mm dd.MM.YYYY"
-      }}</span>
+      <span class="post-created-at">{{ post.createdAt | timeAgoDate }}</span>
     </strong>
   </div>
 
