@@ -9,8 +9,14 @@
     {{ message.user?.firstName }} {{ message.user?.lastName }}
     {{ message.createdAt | date : "HH:mm" }}
   </div>
-  <div class="message-text medium-text">
+  @if(message.isMine){
+  <div class="message-text-mine medium-text">
     {{ message.text }}
   </div>
+  }@else {
+  <div class="message-text-other medium-text">
+    {{ message.text }}
+  </div>
+  }
 </div>
 }
