@@ -1,0 +1,9 @@
+@if(activeChat$ | async; as activeChat){
+<app-chat-workspace-header
+  [profile]="activeChat.componion"
+></app-chat-workspace-header>
+
+<app-chat-workspace-messages-wrapper
+  [chat]="activeChat"
+></app-chat-workspace-messages-wrapper>
+}

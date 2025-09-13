@@ -1,0 +1,25 @@
+:host {
+  display: grid;
+  border: none;
+  border-bottom: var(--light-border);
+  padding: 24px 20px;
+  grid-template-columns: 32px 1fr;
+  gap: 16px;
+  background: none;
+  color: var(--light-color);
+  width: 100%;
+  cursor: pointer;
+}
+
+:host:hover,
+:host:focus-visible,
+:host.active {
+  background: var(--dark-hover-color);
+}
+
+.last-message-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+}

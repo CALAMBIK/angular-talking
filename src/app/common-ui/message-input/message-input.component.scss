@@ -1,0 +1,26 @@
+:host {
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 32px 1fr 44px;
+  background: var(--dark-color);
+  border: 1px solid var(--light-color);
+  gap: 12px;
+  align-items: center;
+}
+
+.hidden-textarea {
+  background: var(--dark-color);
+  border: none;
+  resize: none;
+  color: var(--light-color);
+
+  &:hover,
+  &:focus {
+    outline: solid 1px var(--primary-color);
+  }
+}
+
+.svg {
+  width: 13px;
+  height: 12px;
+}

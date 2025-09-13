@@ -35,6 +35,11 @@ export const routes: Routes = [
             (c) => c.SettingsPageComponent
           ),
       },
+      {
+        path: 'chats',
+        loadChildren: () =>
+          import('./pages/chats-page/chats.router').then((m) => m.chatRoutes),
+      },
     ],
     canActivate: [authGuard],
   },

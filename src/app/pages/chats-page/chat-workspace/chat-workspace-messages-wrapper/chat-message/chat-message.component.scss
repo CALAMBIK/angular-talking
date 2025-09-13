@@ -1,0 +1,27 @@
+:host {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 12px;
+}
+
+:host.is-mine {
+  grid-template-columns: 1fr 32px;
+  justify-self: end;
+
+  .message-container {
+    order: -1;
+  }
+}
+
+.message-text {
+  background-color: var(--message-color);
+  padding: 8px 16px;
+  color: var(--light-color);
+  font-weight: 500;
+  width: min-content;
+  mask: linear-gradient(#000 0 0),
+    linear-gradient(-135deg, #000 50%, #0000 0) border-box 100% 100% / 200% 200%
+      no-repeat;
+  mask-composite: exclude;
+  mask-position: 10% 94%;
+}
