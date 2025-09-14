@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { Profile } from '../../data/models/profile.model';
 import { AvatarCircleComponent } from '../avatar-circle/avatar-circle.component';
 

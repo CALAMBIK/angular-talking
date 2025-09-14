@@ -3,7 +3,6 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  HostBinding,
   HostListener,
   inject,
   Renderer2,

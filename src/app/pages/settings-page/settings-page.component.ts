@@ -2,7 +2,6 @@ import { firstValueFrom } from 'rxjs';
 import { Component, effect, inject, ViewChild } from '@angular/core';
 import { ProfileHeaderComponent } from '../../common-ui/profile-header/profile-header.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { JsonPipe } from '@angular/common';
 import { ProfileService } from '../../data/servises/profile.service';
 import { AvatarUploadComponent } from './avatar-upload/avatar-upload.component';
 
