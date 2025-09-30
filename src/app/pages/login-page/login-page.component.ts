@@ -8,10 +8,11 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
+import { CvaTextPasswordInputComponent } from './cva-text-password-input/cva-text-password-input.component';
 
 @Component({
   selector: 'app-login-page',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, CvaTextPasswordInputComponent],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss',
 })
