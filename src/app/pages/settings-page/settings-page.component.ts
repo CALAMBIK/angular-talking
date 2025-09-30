@@ -4,10 +4,16 @@ import { ProfileHeaderComponent } from '../../common-ui/profile-header/profile-h
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProfileService } from '../../data/servises/profile.service';
 import { AvatarUploadComponent } from './avatar-upload/avatar-upload.component';
+import { StackInputComponent } from '../../common-ui/stack-input/stack-input.component';
 
 @Component({
   selector: 'app-settings-page',
-  imports: [ProfileHeaderComponent, ReactiveFormsModule, AvatarUploadComponent],
+  imports: [
+    ProfileHeaderComponent,
+    ReactiveFormsModule,
+    AvatarUploadComponent,
+    StackInputComponent,
+  ],
   templateUrl: './settings-page.component.html',
   styleUrl: './settings-page.component.scss',
 })
@@ -49,20 +55,7 @@ export class SettingsPageComponent {
       //@ts-ignore
       this.profileService.patchMe({
         ...this.formSettings.value,
-        stack: this.splitStack(this.formSettings.value.stack),
       })
     );
-  }
-
-  private splitStack(stack: string | null | string[] | undefined): string[] {
-    if (!stack) return [];
-    if (Array.isArray(stack)) return stack;
-    return stack.split(',');
-  }
-
-  private mergeStack(stack: string | null | string[] | undefined) {
-    if (!stack) return '';
-    if (Array.isArray(stack)) return stack.join(',');
-    return stack;
   }
 }
