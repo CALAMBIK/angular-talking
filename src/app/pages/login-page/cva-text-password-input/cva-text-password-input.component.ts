@@ -32,7 +32,6 @@ export class CvaTextPasswordInputComponent implements ControlValueAccessor {
 
   // Вызывается когда значение меняется извне (например, formControl.setValue)
   writeValue(val: any): void {
-    console.log(val);
     this.value = val;
   }
 
