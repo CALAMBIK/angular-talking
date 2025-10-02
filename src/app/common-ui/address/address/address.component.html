@@ -1,0 +1,16 @@
+<ng-content></ng-content>
+<tt-input
+  type="text"
+  placeholder="Введите адрес"
+  [formControl]="address"
+></tt-input>
+
+@if( suggestions$ | async; as suggestions){ @if(isDropDown()){
+<div class="suggestions-dropdown">
+  @for(suggest of suggestions; track suggest){
+  <button class="suggest-btn" (click)="onSuggestPick(suggest)">
+    {{ suggest }}
+  </button>
+  }
+</div>
+} }

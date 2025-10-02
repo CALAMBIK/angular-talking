@@ -23,6 +23,8 @@ export const AuthTokenInterceptor: HttpInterceptorFn = (
   const authService = inject(AuthService);
   const token = authService.token;
 
+  if (req.url.includes('dadata')) return next(req);
+
   if (!token) return next(req);
 
   if (isRefreshing$.value) {
