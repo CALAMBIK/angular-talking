@@ -52,9 +52,14 @@
       ><span class="tt-form-label__text">Навыки</span></app-stack-input
     >
 
-    <app-address formControlName="city"
-      ><span class="tt-form-label__text">Адрес</span></app-address
+    <app-address
+      [fullAddressControl]="fullAddressControl"
+      [cityControl]="cityControl"
+      [streetControl]="streetControl"
+      [houseControl]="houseControl"
     >
+      <span class="tt-form-label__text">Адрес</span>
+    </app-address>
   </div>
   <div>
     <div>

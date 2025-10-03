@@ -2,15 +2,45 @@
 <tt-input
   type="text"
   placeholder="Введите адрес"
-  [formControl]="address"
+  [formControl]="addressSearch"
 ></tt-input>
 
 @if( suggestions$ | async; as suggestions){ @if(isDropDown()){
 <div class="suggestions-dropdown">
-  @for(suggest of suggestions; track suggest){
-  <button class="suggest-btn" (click)="onSuggestPick(suggest)">
-    {{ suggest }}
+  @for(suggest of suggestions; track suggest.value){
+  <button type="button" class="suggest-btn" (click)="onSuggestPick(suggest)">
+    {{ suggest.value }}
   </button>
   }
 </div>
 } }
+
+<div class="full-address-container">
+  <div>
+    <span class="tt-form-label__text">Город</span>
+    <tt-input
+      type="text"
+      placeholder="Введите город"
+      [formControl]="city"
+      (ngModelChange)="onManualAddressChange()"
+    ></tt-input>
+  </div>
+  <div>
+    <span class="tt-form-label__text">Улица</span>
+    <tt-input
+      type="text"
+      placeholder="Введите улицу"
+      [formControl]="street"
+      (ngModelChange)="onManualAddressChange()"
+    ></tt-input>
+  </div>
+  <div>
+    <span class="tt-form-label__text">Дом</span>
+    <tt-input
+      type="text"
+      placeholder="Введите дом"
+      [formControl]="house"
+      (ngModelChange)="onManualAddressChange()"
+    ></tt-input>
+  </div>
+</div>

@@ -22,10 +22,6 @@ export class DadataService {
           },
         }
       )
-      .pipe(
-        map((res) =>
-          Array.from(new Set(res.suggestions.map((sug) => sug.data.city)))
-        )
-      );
+      .pipe(map((res) => res.suggestions));
   }
 }
