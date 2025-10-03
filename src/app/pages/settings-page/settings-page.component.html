@@ -67,3 +67,7 @@
     </div>
   </div>
 </form>
+
+<app-modal-window [isOpen]="openModal()" (closed)="onCloseModal()"
+  >Данные о пользователе сохранены</app-modal-window
+>

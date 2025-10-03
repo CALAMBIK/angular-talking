@@ -1,5 +1,5 @@
 import { firstValueFrom } from 'rxjs';
-import { Component, effect, inject, ViewChild } from '@angular/core';
+import { Component, effect, inject, signal, ViewChild } from '@angular/core';
 import { ProfileHeaderComponent } from '../../common-ui/profile-header/profile-header.component';
 import {
   FormBuilder,
@@ -13,6 +13,7 @@ import { StackInputComponent } from '../../common-ui/stack-input/stack-input.com
 import { AddressComponent } from '../../common-ui/address/address/address.component';
 import { Profile } from '../../data/models/profile.model';
 import { FullAddress } from '../../common-ui/address/models/full-address.model';
+import { ModalWindowComponent } from '../../common-ui/modal-wondow/modal-window/modal-window.component';
 @Component({
   selector: 'app-settings-page',
   imports: [
@@ -21,6 +22,7 @@ import { FullAddress } from '../../common-ui/address/models/full-address.model';
     AvatarUploadComponent,
     StackInputComponent,
     AddressComponent,
+    ModalWindowComponent,
   ],
   templateUrl: './settings-page.component.html',
   styleUrl: './settings-page.component.scss',
@@ -30,6 +32,8 @@ export class SettingsPageComponent {
 
   private readonly fb = inject(FormBuilder);
   public readonly profileService = inject(ProfileService);
+
+  public openModal = signal(false);
 
   public formSettings = this.fb.group({
     firstName: ['', Validators.required],
@@ -92,9 +96,11 @@ export class SettingsPageComponent {
     }
 
     // Обновление профиля
-    firstValueFrom(this.profileService.patchMe(dataToSend)).catch((error) => {
-      console.error('Error updating profile:', error);
-    });
+    firstValueFrom(this.profileService.patchMe(dataToSend))
+      .then(() => this.openModal.set(true))
+      .catch((error) => {
+        console.error('Error updating profile:', error);
+      });
   }
 
   get fullAddressControl(): FormControl {
@@ -153,5 +159,9 @@ export class SettingsPageComponent {
     if (address.house) parts.push(address.house);
 
     return parts.join(', ');
+  }
+
+  public onCloseModal() {
+    this.openModal.set(false);
   }
 }
