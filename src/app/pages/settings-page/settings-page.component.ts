@@ -83,10 +83,26 @@ export class SettingsPageComponent {
       username: formValue.username || undefined,
       description: formValue.description || undefined,
       stack: formValue.stack || [],
-      city: this.formatAddressForServer(formValue.city), // Форматируем адрес для сервера
+      city: this.formatAddressForServer(formValue.city),
     };
 
-    // Загрузка аватара
+    // Проверяем, изменились ли данные по сравнению с текущим профилем
+    const currentProfile = this.profileService.me();
+    const isChanged =
+      currentProfile?.firstName !== dataToSend.firstName ||
+      currentProfile?.lastName !== dataToSend.lastName ||
+      currentProfile?.username !== dataToSend.username ||
+      currentProfile?.description !== dataToSend.description ||
+      JSON.stringify(currentProfile?.stack || []) !==
+        JSON.stringify(dataToSend.stack || []) ||
+      this.formatAddressForServer(currentProfile?.city) !== dataToSend.city;
+
+    if (!isChanged && !this.avaterUploader.avatar) {
+      // Ничего не менялось, не открываем модалку
+      return;
+    }
+
+    // Загрузка аватара (если есть)
     if (this.avaterUploader.avatar) {
       firstValueFrom(
         this.profileService.uploadAvatar(this.avaterUploader.avatar)
