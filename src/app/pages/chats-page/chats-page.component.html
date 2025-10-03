@@ -1,5 +1,9 @@
 <app-chats-list></app-chats-list>
 
-<div>
-  <router-outlet></router-outlet>
+<div class="chat-content">
+  <router-outlet #outlet="outlet"></router-outlet>
+
+  @if(!outlet.isActivated){
+  <div class="placeholder-message">Выберите чат для общения</div>
+  }
 </div>
