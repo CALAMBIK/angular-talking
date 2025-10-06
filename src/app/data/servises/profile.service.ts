@@ -60,9 +60,24 @@ export class ProfileService {
       );
   }
 
-  public filterProfiles(params: Record<string, any>) {
+  public filterProfiles(
+    params: Record<string, any> & { page?: number; size?: number }
+  ) {
+    const page = params.page ?? 1;
+    const size = params.size ?? 10;
+
     return this.http
-      .get<Pageble<Profile>>(`${this.baseApiUrl}account/accounts`, { params })
-      .pipe(tap((res) => this.filteredProfiles.set(res.items)));
+      .get<Pageble<Profile>>(`${this.baseApiUrl}account/accounts`, {
+        params: { ...params, page, size },
+      })
+      .pipe(
+        tap((res) => {
+          if (page === 1) {
+            this.filteredProfiles.set(res.items);
+          } else {
+            this.filteredProfiles.update((old) => [...old, ...res.items]);
+          }
+        })
+      );
   }
 }

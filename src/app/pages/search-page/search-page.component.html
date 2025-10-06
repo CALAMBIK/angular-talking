@@ -1,7 +1,27 @@
-<app-profile-filters></app-profile-filters>
+<app-profile-filters
+  (filtersChange)="onFiltersChange($event)"
+></app-profile-filters>
 
-<div class="profile-card__wrapper">
-  @for(profile of profiles(); track profile.id){
+<div
+  class="profile-card__wrapper"
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="100"
+  [scrollWindow]="false"
+  (scrolled)="onScroll()"
+>
+  @if(isInitialLoading){
+  <div class="loader-overlay">
+    <div class="loader"></div>
+  </div>
+  } @for (profile of profiles(); track profile.id) {
   <app-profile-card [profile]="profile"></app-profile-card>
+  } @if(isLoading && !isInitialLoading){
+  <div class="bottom-loader">
+    <div class="loader small"></div>
+  </div>
+  } @if(!isLoading && profiles().length === 0){
+  <p class="no-results">Ничего не найдено 😔</p>
+
   }
 </div>
