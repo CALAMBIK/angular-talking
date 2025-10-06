@@ -23,7 +23,6 @@ export class ProfileFiltersComponent {
       .pipe(
         startWith({}),
         debounceTime(300),
-        tap((v) => console.log(v)),
         switchMap((formValue) => {
           return this.profileService.filterProfiles(formValue);
         }),

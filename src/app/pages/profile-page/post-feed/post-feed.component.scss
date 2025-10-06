@@ -3,6 +3,7 @@
   display: grid;
   gap: 16px;
   overflow-y: auto;
+  min-width: 400px;
 
   /* Webkit браузеры */
   &::-webkit-scrollbar {
