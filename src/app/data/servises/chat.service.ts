@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Chat, LastMessageRes, Message } from '../models/chat.model';
 import { ProfileService } from './profile.service';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { ChatWSService } from '../ws/interfaces/chat-ws-service.interface';
 import { ChatWSNativeService } from '../ws/services/chat-ws-native.service';
 import { AuthService } from '../../auth/auth.service';
 import { ChatWSMessage } from '../ws/interfaces/chat-ws-message.interface';
 import { isNewMessage, isUnreadMessage } from '../ws/interfaces/type-guards';
+import { ChatWSRxJsService } from '../ws/services/chat-ws-rxjs.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,18 +20,19 @@ export class ChatService {
   private readonly profileService = inject(ProfileService);
   private readonly token = inject(AuthService).token;
 
-  public wsAdapter: ChatWSService = new ChatWSNativeService();
+  // public wsAdapter: ChatWSService = new ChatWSNativeService();
+  public wsAdapter: ChatWSService = new ChatWSRxJsService();
 
   private readonly http = inject(HttpClient);
 
   public activeChatMessages = signal<Message[]>([]);
 
   public connectWS() {
-    this.wsAdapter.connect({
+    return this.wsAdapter.connect({
       url: `${this.baseApiUrl}chat/ws`,
       token: this.token ?? '',
       handleMessage: this.handleMessage,
-    });
+    }) as Observable<ChatWSMessage>;
   }
 
   private handleMessage = (message: ChatWSMessage) => {
