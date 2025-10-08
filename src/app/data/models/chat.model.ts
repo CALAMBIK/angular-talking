@@ -15,9 +15,9 @@ export type Message = {
   text: string;
   createdAt: string;
   isRead: boolean;
-  updatedAt: string;
+  updatedAt?: string;
   user?: Profile;
-  isMine: boolean;
+  isMine?: boolean;
 };
 
 export type LastMessageRes = {

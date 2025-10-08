@@ -21,45 +21,43 @@ import { Chat } from '../../../../data/models/chat.model';
   templateUrl: './chat-workspace-messages-wrapper.component.html',
   styleUrl: './chat-workspace-messages-wrapper.component.scss',
 })
-export class ChatWorkspaceMessagesWrapperComponent
-  implements OnInit, OnDestroy
-{
+export class ChatWorkspaceMessagesWrapperComponent {
   private readonly chatService = inject(ChatService);
   public chat = input.required<Chat>();
   public messages = this.chatService.activeChatMessages;
   private readonly hostElement = inject(ElementRef);
   private readonly r2 = inject(Renderer2);
 
-  private pollingSubscription: Subscription | null = null;
+  // private pollingSubscription: Subscription | null = null;
 
-  ngOnInit(): void {
-    this.startPolling();
-  }
+  // ngOnInit(): void {
+  //   this.startPolling();
+  // }
 
-  ngOnDestroy(): void {
-    this.stopPolling();
-  }
+  // ngOnDestroy(): void {
+  //   this.stopPolling();
+  // }
 
-  private startPolling(): void {
-    this.stopPolling();
+  // private startPolling(): void {
+  //   this.stopPolling();
 
-    this.pollingSubscription = timer(0, 10000)
-      .pipe(
-        switchMap(() => this.chatService.getChatById(this.chat().id)),
-        catchError((error) => {
-          console.error('Error polling chat:', error);
-          return [];
-        })
-      )
-      .subscribe();
-  }
+  //   this.pollingSubscription = timer(0, 10000)
+  //     .pipe(
+  //       switchMap(() => this.chatService.getChatById(this.chat().id)),
+  //       catchError((error) => {
+  //         console.error('Error polling chat:', error);
+  //         return [];
+  //       })
+  //     )
+  //     .subscribe();
+  // }
 
-  private stopPolling(): void {
-    if (this.pollingSubscription) {
-      this.pollingSubscription.unsubscribe();
-      this.pollingSubscription = null;
-    }
-  }
+  // private stopPolling(): void {
+  //   if (this.pollingSubscription) {
+  //     this.pollingSubscription.unsubscribe();
+  //     this.pollingSubscription = null;
+  //   }
+  // }
 
   @HostListener('window:resize')
   onWindowResize() {
@@ -77,7 +75,8 @@ export class ChatWorkspaceMessagesWrapperComponent
   }
 
   public async onSendMessage(message: string) {
-    await firstValueFrom(this.chatService.sendMessage(this.chat().id, message));
+    this.chatService.wsAdapter.sendMessage(message, this.chat().id);
+    // await firstValueFrom(this.chatService.sendMessage(this.chat().id, message));
     await firstValueFrom(this.chatService.getChatById(this.chat().id));
   }
 }
