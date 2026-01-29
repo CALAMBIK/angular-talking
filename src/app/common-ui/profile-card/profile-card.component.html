@@ -20,6 +20,18 @@
   </div>
 
   <div class="profile-card__action-btns">
-    <button class="btn">Подписаться</button>
+    <button
+      class="btn"
+      (click)="toggleSubscribe()"
+      [disabled]="isLoading()"
+      [class.btn-subscribed]="isSubscribed()"
+      [class.btn-not-subscribed]="!isSubscribed()"
+    >
+      <span *ngIf="isLoading()">...</span>
+
+      <span *ngIf="!isLoading()">
+        {{ isSubscribed() ? "Отписаться" : "Подписаться" }}
+      </span>
+    </button>
   </div>
 </div>

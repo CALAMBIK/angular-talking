@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { BehaviorSubject, map, Observable, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
 import { Profile } from '../models/profile.model';
 import { Pageble } from '../models/pageble.model';
 
@@ -22,7 +22,7 @@ export class ProfileService {
       tap((res) => {
         this.me.set(res);
         this.me$.next(res);
-      })
+      }),
     );
   }
 
@@ -43,7 +43,7 @@ export class ProfileService {
         tap((updatedProfile) => {
           this.me.set(updatedProfile);
           this.me$.next(updatedProfile);
-        })
+        }),
       );
   }
 
@@ -56,12 +56,12 @@ export class ProfileService {
         tap((updatedProfile) => {
           this.me.set(updatedProfile);
           this.me$.next(updatedProfile);
-        })
+        }),
       );
   }
 
   public filterProfiles(
-    params: Record<string, any> & { page?: number; size?: number }
+    params: Record<string, any> & { page?: number; size?: number },
   ) {
     const page = params.page ?? 1;
     const size = params.size ?? 10;
@@ -77,7 +77,43 @@ export class ProfileService {
           } else {
             this.filteredProfiles.update((old) => [...old, ...res.items]);
           }
-        })
+        }),
+      );
+  }
+
+  public subscribe(accountId: number): Observable<any> {
+    return this.http
+      .post(`${this.baseApiUrl}account/subscribe/${accountId}`, {})
+      .pipe(
+        tap(() => {
+          console.log(`Подписан на пользователя: ${accountId}`);
+        }),
+      );
+  }
+
+  public unsubscribe(accountId: number): Observable<any> {
+    return this.http
+      .delete(`${this.baseApiUrl}account/subscribe/${accountId}`)
+      .pipe(
+        tap(() => {
+          console.log(`Отписан от пользователя: ${accountId}`);
+        }),
+      );
+  }
+
+  public isSubscribedTo(accountId: number): Observable<boolean> {
+    const myId = this.me()?.id;
+
+    return this.http
+      .get<Pageble<Profile>>(`${this.baseApiUrl}account/subscriptions/${myId}`)
+      .pipe(
+        map((response) => {
+          return response.items.some((profile) => profile.id === accountId);
+        }),
+        catchError((error) => {
+          console.error('Ошибка при получении подписок:', error);
+          return of(false);
+        }),
       );
   }
 }
