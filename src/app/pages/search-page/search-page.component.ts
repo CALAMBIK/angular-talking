@@ -3,7 +3,6 @@ import { ProfileCardComponent } from '../../common-ui/profile-card/profile-card.
 import { ProfileService } from '../../data/servises/profile.service';
 import { ProfileFiltersComponent } from './profile-filters/profile-filters.component';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-search-page',

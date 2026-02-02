@@ -17,6 +17,8 @@ export class ProfileService {
 
   public me$ = new BehaviorSubject<Profile | null>(null);
 
+  public subscribers = signal<Profile[] | null>(null);
+
   public getMe(): Observable<Profile> {
     return this.http.get<Profile>(`${this.baseApiUrl}account/me`).pipe(
       tap((res) => {
@@ -30,6 +32,22 @@ export class ProfileService {
     return this.http
       .get<Pageble<Profile>>(`${this.baseApiUrl}account/subscribers/`)
       .pipe(map((res) => res.items.slice(0, subscribersAmount)));
+  }
+
+  public getMySubscribers(): Observable<Pageble<Profile> | null> {
+    const me = this.me();
+    if (!me?.id) {
+      console.error('ID пользователя не найден');
+      return of(null);
+    }
+
+    return this.http
+      .get<Pageble<Profile>>(`${this.baseApiUrl}account/subscribers/${me.id}`)
+      .pipe(
+        tap((res) => {
+          this.subscribers.set(res.items);
+        }),
+      );
   }
 
   public getAccount(id: string) {

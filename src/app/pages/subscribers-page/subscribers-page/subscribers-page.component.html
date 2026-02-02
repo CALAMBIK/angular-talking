@@ -1,0 +1,7 @@
+<div class="profile-card__wrapper">
+  @for (subscriber of subscribers(); track subscriber.id) {
+    <div class="card">
+      <app-profile-card [profile]="subscriber"></app-profile-card>
+    </div>
+  }
+</div>

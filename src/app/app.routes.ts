@@ -10,7 +10,7 @@ export const routes: Routes = [
     path: '',
     loadComponent: () =>
       import('./common-ui/layout/layout.component').then(
-        (c) => c.LayoutComponent
+        (c) => c.LayoutComponent,
       ),
     children: [
       { path: '', redirectTo: 'profile/me', pathMatch: 'full' },
@@ -18,27 +18,34 @@ export const routes: Routes = [
         path: 'search',
         loadComponent: () =>
           import('./pages/search-page/search-page.component').then(
-            (c) => c.SearchPageComponent
+            (c) => c.SearchPageComponent,
           ),
       },
       {
         path: 'profile/:id',
         loadComponent: () =>
           import('./pages/profile-page/profile-page.component').then(
-            (c) => c.ProfilePageComponent
+            (c) => c.ProfilePageComponent,
           ),
       },
       {
         path: 'settings',
         loadComponent: () =>
           import('./pages/settings-page/settings-page.component').then(
-            (c) => c.SettingsPageComponent
+            (c) => c.SettingsPageComponent,
           ),
       },
       {
         path: 'chats',
         loadChildren: () =>
           import('./pages/chats-page/chats.router').then((m) => m.chatRoutes),
+      },
+      {
+        path: 'subscribers',
+        loadComponent: () =>
+          import('./pages/subscribers-page/subscribers-page/subscribers-page.component').then(
+            (c) => c.SubscribersPageComponent,
+          ),
       },
     ],
     canActivate: [authGuard],
