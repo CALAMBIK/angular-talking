@@ -47,6 +47,13 @@ export const routes: Routes = [
             (c) => c.SubscribersPageComponent,
           ),
       },
+      {
+        path: 'subscriptions',
+        loadComponent: () =>
+          import('./pages/subscriptions-page/subscriptions-page.component').then(
+            (c) => c.SubscriptionsPageComponent,
+          ),
+      },
     ],
     canActivate: [authGuard],
   },

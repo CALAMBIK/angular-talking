@@ -1,50 +1,68 @@
-@if(profile$ | async; as profile){
-<header class="profile-page__header">
-  <app-profile-header [profile]="profile"></app-profile-header>
-  @if(isMyProfile()){
-  <a class="btn to-settings-btn" [routerLink]="['/settings']">
-    Редактировать <svg icon="settings" class="to-settings-icon"></svg>
-  </a>
-  } @else {
-  <button class="btn to-settings-btn" (click)="onSendMessage(profile.id)">
-    Написать <svg icon="send" class="to-settings-icon"></svg>
-  </button>
-  }
-</header>
+@if (profile$ | async; as profile) {
+  <header class="profile-page__header">
+    <app-profile-header [profile]="profile"></app-profile-header>
+    @if (isMyProfile()) {
+      <a class="btn to-settings-btn" [routerLink]="['/settings']">
+        Редактировать <svg icon="settings" class="to-settings-icon"></svg>
+      </a>
+    } @else {
+      <button class="btn to-settings-btn" (click)="onSendMessage(profile.id)">
+        Написать <svg icon="send" class="to-settings-icon"></svg>
+      </button>
+    }
+  </header>
 
-<main class="profile-page-body">
-  <app-post-feed></app-post-feed>
+  <main class="profile-page-body">
+    <app-post-feed></app-post-feed>
 
-  <div>
     <div>
-      <h3 class="mb16">Подписчики</h3>
-      <div class="profile-page-body__subscribers mb32">
-        @for(subscriber of subscribers$ | async; track subscriber.id){
-        <a [routerLink]="['/profile', subscriber.id]">
-          <img
-            [src]="subscriber.avatarUrl | imgUrl"
-            [alt]="subscriber.lastName"
-        /></a>
-        }
-        <a class="to-subscribers-search" [routerLink]="['/search']"></a>
+      <div>
+        <h3 class="mb16">
+          <a [routerLink]="['/subscribers']" class="btn-sub">Подписчики</a>
+        </h3>
+        <div class="profile-page-body__subscribers mb32">
+          @for (subscriber of subscribers$ | async; track subscriber.id) {
+            <a [routerLink]="['/profile', subscriber.id]">
+              <img
+                [src]="subscriber.avatarUrl | imgUrl"
+                [alt]="subscriber.lastName"
+            /></a>
+          }
+          <a class="to-subscribers-search" [routerLink]="['/search']"></a>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="mb16">
+          <a [routerLink]="['/subscriptions']" class="btn-sub">Подписки</a>
+        </h3>
+        <div class="profile-page-body__subscribers mb32">
+          @for (subscription of subscriptions$ | async; track subscription.id) {
+            <a [routerLink]="['/profile', subscription.id]">
+              <img
+                [src]="subscription.avatarUrl | imgUrl"
+                [alt]="subscription.lastName"
+            /></a>
+          }
+          <a class="to-subscribers-search" [routerLink]="['/search']"></a>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="mb16">Навыки</h3>
+        <div class="profile-page-body__skills mb32">
+          @for (skill of profile.stack; track skill) {
+            <div class="skill-tag">{{ skill }}</div>
+          }
+        </div>
+      </div>
+
+      <div>
+        <h3 class="mb16">О себе</h3>
+        <p>
+          {{ profile.description }}
+        </p>
       </div>
     </div>
-
-    <div>
-      <h3 class="mb16">Навыки</h3>
-      <div class="profile-page-body__skills mb32">
-        @for(skill of profile.stack; track skill){
-        <div class="skill-tag">{{ skill }}</div>
-        }
-      </div>
-    </div>
-
-    <div>
-      <h3 class="mb16">О себе</h3>
-      <p>
-        {{ profile.description }}
-      </p>
-    </div>
-  </div>
-</main>
+  </main>
 }

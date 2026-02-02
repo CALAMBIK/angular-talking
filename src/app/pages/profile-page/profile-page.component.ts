@@ -34,17 +34,19 @@ export class ProfilePageComponent {
 
   public subscribers$ = this.profileService.getSubscribersShortList(5);
 
+  public subscriptions$ = this.profileService.getSubscriptionsShortList(5);
+
   public profile$ = this.route.params.pipe(
     switchMap(({ id }) => {
       this.isMyProfile.set(id === 'me' || id === this.profileService.me()?.id);
       if (id === 'me') return this.me$;
       return this.profileService.getAccount(id);
-    })
+    }),
   );
 
   public async onSendMessage(userId: number) {
     await firstValueFrom(this.chatService.createChat(userId)).then((res) =>
-      this.router.navigate(['/chats', res.id])
+      this.router.navigate(['/chats', res.id]),
     );
   }
 }
