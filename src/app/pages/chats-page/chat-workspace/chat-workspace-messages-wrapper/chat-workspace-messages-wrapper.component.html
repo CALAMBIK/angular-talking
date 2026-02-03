@@ -1,9 +1,46 @@
+<!-- chat-workspace-messages-wrapper.component.html -->
 <div class="messages-wrapper">
-  @for(message of messages(); track message.id){
-  <app-chat-message [message]="message"></app-chat-message>
+  @for (message of messages(); track message.id) {
+    <app-chat-message [message]="message"></app-chat-message>
+  }
+
+  <!-- Показываем предложения ответов ОБОИМ пользователям -->
+  @if (showSuggestions() && suggestions().length > 0) {
+    <div class="suggestions-container" [class.for-both]="showForBothUsers()">
+      <div class="suggestions-header">
+        <span class="suggestions-title">Варианты ответа:</span>
+        <button class="suggestions-close" (click)="showSuggestions.set(false)">
+          ✕
+        </button>
+      </div>
+      <div class="suggestions-list">
+        @for (suggestion of suggestions(); track $index) {
+          <button
+            class="suggestion-button"
+            (click)="onSelectSuggestion(suggestion)"
+            [disabled]="isGeneratingSuggestions()"
+          >
+            @if (isGeneratingSuggestions()) {
+              <span class="loading">Загрузка...</span>
+            } @else {
+              {{ suggestion }}
+            }
+          </button>
+        }
+      </div>
+      <div class="suggestions-info">
+        <small>Предложения обновляются при каждом новом сообщении</small>
+      </div>
+    </div>
   }
 </div>
 
+<!-- Компонент ввода сообщения -->
 <div class="mt16">
-  <app-message-input (created)="onSendMessage($event)"></app-message-input>
+  <app-message-input
+    (created)="onSendCustomMessage($event)"
+    placeholder="'Введите ваше сообщение...'"
+    disabled="isGeneratingSuggestions()"
+  >
+  </app-message-input>
 </div>

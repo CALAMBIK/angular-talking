@@ -38,20 +38,39 @@ export class ChatService {
   private handleMessage = (message: ChatWSMessage) => {
     if (isUnreadMessage(message)) {
     }
-
     if (isNewMessage(message)) {
-      this.activeChatMessages.set([
-        ...this.activeChatMessages(),
-        {
+      const me = this.profileService.me();
+      const isMine = me ? message.data.author === me.id : false;
+
+      const existingMessages = this.activeChatMessages();
+
+      const isDuplicate = existingMessages.some(
+        (msg) =>
+          msg.text === message.data.message &&
+          Math.abs(
+            new Date(msg.createdAt).getTime() -
+              new Date(message.data.created_at).getTime(),
+          ) < 2000 &&
+          msg.isMine === isMine,
+      );
+
+      if (!isDuplicate) {
+        const messageToAdd = {
           id: message.data.id,
           userFromId: message.data.author,
           personalChatId: message.data.chat_id,
           text: message.data.message,
           createdAt: message.data.created_at,
           isRead: false,
-          isMine: false,
-        },
-      ]);
+          isMine: isMine,
+        };
+
+        if (isMine && me) {
+          (messageToAdd as any).user = me;
+        }
+
+        this.activeChatMessages.set([...existingMessages, messageToAdd as any]);
+      }
     }
   };
 
@@ -82,7 +101,7 @@ export class ChatService {
               : chat.userFirst,
           messages: patchMessgers,
         };
-      })
+      }),
     );
   }
 
@@ -98,7 +117,7 @@ export class ChatService {
         params: {
           message,
         },
-      }
+      },
     );
   }
 }
