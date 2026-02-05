@@ -9,6 +9,12 @@ export interface SuggestionResponse {
   messageCount?: number;
   generatedFrom?: string;
   error?: string;
+  context?: {
+    topics: string[];
+    tone: string;
+    emotions: string[];
+    patterns: string[];
+  };
 }
 
 export interface ChatContext {
@@ -28,13 +34,17 @@ export class AIService {
 
   constructor(private http: HttpClient) {}
 
-  generateResponse(
-    messages: { role: string; content: string }[],
-  ): Observable<{ response: string; model?: string; source?: string }> {
+  generateResponse(messages: { role: string; content: string }[]): Observable<{
+    response: string;
+    model?: string;
+    source?: string;
+    context?: any;
+  }> {
     return this.http.post<{
       response: string;
       model?: string;
       source?: string;
+      context?: any;
     }>(`${this.baseUrl}/ai/generate-response`, {
       messages,
     });
@@ -50,7 +60,7 @@ export class AIService {
       `${this.baseUrl}/ai/suggest-responses`,
       {
         messages,
-        userId, // Добавляем идентификатор пользователя
+        userId,
         count,
       },
     );
