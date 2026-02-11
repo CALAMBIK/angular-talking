@@ -18,12 +18,11 @@
   padding: 8px 16px;
   color: var(--light-color);
   font-weight: 500;
-  width: min-content;
-  mask: linear-gradient(#000 0 0),
-    linear-gradient(135deg, #000 50%, #0000 0) border-box 100% 100% / 200% 200%
-      no-repeat;
-  mask-composite: exclude;
-  mask-position: 90% 94%;
+  width: fit-content; // Изменено с min-content на fit-content
+  max-width: 70%; // Максимальная ширина 70% от родителя
+  word-wrap: break-word; // Перенос длинных слов
+  word-break: break-word; // Перенос длинных слов
+  white-space: pre-wrap; // Сохраняем пробелы и переносы
 }
 
 .message-text-mine {
@@ -31,10 +30,22 @@
   padding: 8px 16px;
   color: var(--dark-color);
   font-weight: 500;
-  width: min-content;
-  mask: linear-gradient(#000 0 0),
-    linear-gradient(-135deg, #000 50%, #0000 0) border-box 100% 100% / 200% 200%
-      no-repeat;
-  mask-composite: exclude;
-  mask-position: 10% 94%;
+  width: fit-content; // Изменено с min-content на fit-content
+  max-width: 70%; // Максимальная ширина 70% от родителя
+  word-wrap: break-word; // Перенос длинных слов
+  word-break: break-word; // Перенос длинных слов
+  white-space: pre-wrap; // Сохраняем пробелы и переносы
+  margin-left: auto; // Выравнивание справа для своих сообщений
+}
+
+.message-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 0; // Важно для корректной работы max-width
+}
+
+.medium-text {
+  &.mb8 {
+    margin-bottom: 8px;
+  }
 }

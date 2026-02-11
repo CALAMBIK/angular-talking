@@ -1,22 +1,22 @@
-@if(message(); as message){
-<app-avatar-circle
-  class="size32"
-  [avatarUrl]="message.user?.avatarUrl"
-></app-avatar-circle>
+@if (message(); as message) {
+  <app-avatar-circle
+    class="size32"
+    [avatarUrl]="message.user?.avatarUrl"
+  ></app-avatar-circle>
 
-<div class="message-container">
-  <div class="medium-text mb8">
-    {{ message.user?.firstName }} {{ message.user?.lastName }}
-    {{ message.createdAt | date : "HH:mm" }}
+  <div class="message-container">
+    <div class="medium-text mb8">
+      {{ message.user?.firstName }} {{ message.user?.lastName }}
+      {{ message.createdAt | date: "HH:mm" }}
+    </div>
+    @if (message.isMine) {
+      <div class="message-text-mine medium-text">
+        {{ message.text }}
+      </div>
+    } @else {
+      <div class="message-text-other medium-text">
+        {{ message.text }}
+      </div>
+    }
   </div>
-  @if(message.isMine){
-  <div class="message-text-mine medium-text">
-    {{ message.text }}
-  </div>
-  }@else {
-  <div class="message-text-other medium-text">
-    {{ message.text }}
-  </div>
-  }
-</div>
 }
