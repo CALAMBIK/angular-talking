@@ -1,5 +1,7 @@
-<app-post-input></app-post-input>
+@if (!userId() || userId() === profileService.me()?.id) {
+  <app-post-input (created)="onPostCreated()"></app-post-input>
+}
 
-@for(post of feed(); track post.id){
-<app-post [post]="post"></app-post>
+@for (post of feed(); track post.id) {
+  <app-post [post]="post"></app-post>
 }

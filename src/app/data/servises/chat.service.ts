@@ -20,7 +20,6 @@ export class ChatService {
   private readonly profileService = inject(ProfileService);
   private readonly token = inject(AuthService).token;
 
-  // public wsAdapter: ChatWSService = new ChatWSNativeService();
   public wsAdapter: ChatWSService = new ChatWSRxJsService();
 
   private readonly http = inject(HttpClient);

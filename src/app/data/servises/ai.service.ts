@@ -50,7 +50,6 @@ export class AIService {
     });
   }
 
-  // Обновленный метод для получения предложений ответов
   getSuggestions(
     messages: { role: string; content: string }[],
     userId: string,
@@ -66,7 +65,6 @@ export class AIService {
     );
   }
 
-  // Метод для получения контекста чата
   getChatContext(
     messages: { role: string; content: string }[],
     userId: string,

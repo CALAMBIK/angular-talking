@@ -21,6 +21,8 @@ export class LoginPageComponent {
   private readonly router = inject(Router);
 
   public isVisible = signal<boolean>(false);
+  public loginError = signal<string | null>(null);
+  public isLoading = signal<boolean>(false);
 
   public loginForm = new FormGroup({
     username: new FormControl(null, Validators.required),
@@ -29,11 +31,24 @@ export class LoginPageComponent {
 
   public onSubmit() {
     if (this.loginForm.valid) {
-      console.log(this.loginForm.value);
+      this.isLoading.set(true);
+      this.loginError.set(null);
+
+      const credentials = {
+        username: this.loginForm.value.username,
+        password: this.loginForm.value.password,
+      };
       //@ts-ignore
-      this.authService.login(this.loginForm.value).subscribe((val) => {
-        this.router.navigate(['/']);
-        console.log(val);
+      this.authService.login(credentials).subscribe({
+        next: () => {
+          this.isLoading.set(false);
+          this.router.navigate(['/']);
+        },
+        error: (error) => {
+          this.isLoading.set(false);
+          this.loginForm.setErrors({ invalidCredentials: true });
+          this.loginError.set('Неверный логин или пароль');
+        },
       });
     }
   }

@@ -28,6 +28,12 @@ export class PostService {
       .pipe(tap((res) => this.posts.set(res)));
   }
 
+  public getPostsByUserId(userId: number) {
+    return this.http.get<Post[]>(`${this.baseApiUrl}post/`, {
+      params: { user_id: userId.toString() },
+    });
+  }
+
   public createComment(payload: CommentCreateDto) {
     return this.http.post<PostComment>(`${this.baseApiUrl}comment/`, payload);
   }

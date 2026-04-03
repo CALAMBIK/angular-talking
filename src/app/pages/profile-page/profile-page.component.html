@@ -13,9 +13,11 @@
   </header>
 
   <main class="profile-page-body">
-    <app-post-feed></app-post-feed>
+    <!-- Передаем userId в PostFeedComponent -->
+    <app-post-feed [userId]="profileUserId()"></app-post-feed>
 
     <div>
+      <!-- остальной код без изменений -->
       <div>
         <h3 class="mb16">
           <a [routerLink]="['/subscribers']" class="btn-sub">Подписчики</a>

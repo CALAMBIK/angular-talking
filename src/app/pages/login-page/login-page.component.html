@@ -18,7 +18,15 @@
       Пароль
     </tt-input>
 
-    <button class="btn btn-shadow" type="submit">Войти</button>
+    @if (loginError()) {
+      <div class="error-message">
+        {{ loginError() }}
+      </div>
+    }
+
+    <button class="btn btn-shadow" type="submit" [disabled]="isLoading()">
+      <span>Войти</span>
+    </button>
   </form>
 </div>
 

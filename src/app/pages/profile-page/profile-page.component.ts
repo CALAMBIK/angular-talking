@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { ProfileHeaderComponent } from '../../common-ui/profile-header/profile-header.component';
 import { ProfileService } from '../../data/servises/profile.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { firstValueFrom, switchMap } from 'rxjs';
+import { firstValueFrom, switchMap, tap } from 'rxjs';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { AsyncPipe } from '@angular/common';
 import { ImgUrlPipe } from '../../helpers/pipes/img-url.pipe';
@@ -36,11 +36,18 @@ export class ProfilePageComponent {
 
   public subscriptions$ = this.profileService.getSubscriptionsShortList(5);
 
+  public profileUserId = signal<number | null>(null);
+
   public profile$ = this.route.params.pipe(
     switchMap(({ id }) => {
       this.isMyProfile.set(id === 'me' || id === this.profileService.me()?.id);
       if (id === 'me') return this.me$;
       return this.profileService.getAccount(id);
+    }),
+    tap((profile) => {
+      if (profile) {
+        this.profileUserId.set(profile.id);
+      }
     }),
   );
 
