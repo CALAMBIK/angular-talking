@@ -39,30 +39,29 @@ export class ChatWorkspaceMessagesWrapperComponent
   public chat = input.required<Chat>();
   private readonly hostElement = inject(ElementRef);
   private readonly r2 = inject(Renderer2);
-  // Сигналы
+
   messages = this.chatService.activeChatMessages;
   suggestions = signal<string[]>([]);
   isGeneratingSuggestions = signal(false);
   showSuggestions = signal(false);
-  showForBothUsers = signal(true); // Показывать обоим пользователям
+  showForBothUsers = signal(true);
   currentUserId = signal<string>('');
   lastGeneratedContext = signal<any>(null);
-  // Таймер для автообновления предложений
+
   private suggestionTimer?: Subscription;
   private lastMessageCount = 0;
-  // Дебаунс для предотвращения слишком частых запросов
-  private readonly debounceTime = 1500;
-  // Observable для отслеживания изменений сообщений
+
+  private readonly debounceTime = 1000;
+
   private messages$ = toObservable(this.messages);
   constructor() {
-    // Запускаем эффект в конструкторе с помощью runInInjectionContext
     runInInjectionContext(this.injector, () => {
       effect(() => {
         this.checkForMessageChanges();
       });
     });
   }
-  // Определяем, кто является собеседниками
+
   getParticipantsInfo() {
     const chat = this.chat();
     const me = this.profileService.me();
@@ -73,21 +72,19 @@ export class ChatWorkspaceMessagesWrapperComponent
       amIFirst: chat.userFirst.id === me.id,
     };
   }
-  // Получаем историю сообщений для AI
+
   private getMessageHistoryForAI() {
     const allMessages = this.messages();
     const participants = this.getParticipantsInfo();
     if (!participants) return [];
-    // Берем последние 15 сообщений
     const recentMessages = [...allMessages].slice(-15);
-    // Конвертируем в формат для AI
     return recentMessages.map((msg) => ({
       role: msg.isMine ? 'user' : 'assistant',
       content: msg.text,
       timestamp: msg.createdAt,
     }));
   }
-  // Генерация предложений ответов
+
   async generateSuggestions() {
     const participants = this.getParticipantsInfo();
     if (!participants) {
@@ -96,7 +93,7 @@ export class ChatWorkspaceMessagesWrapperComponent
       return;
     }
     const messageHistory = this.getMessageHistoryForAI();
-    // Если нет истории сообщений, используем приветственные варианты
+
     if (messageHistory.length === 0) {
       this.suggestions.set(['Привет!', 'Здравствуйте!', 'Как дела?']);
       this.showSuggestions.set(true);
@@ -115,7 +112,6 @@ export class ChatWorkspaceMessagesWrapperComponent
       if (response.suggestions && response.suggestions.length > 0) {
         this.suggestions.set(response.suggestions);
         this.showSuggestions.set(true);
-        // Используем type assertion для безопасного доступа к context
         const typedResponse = response as any;
         if (typedResponse.context) {
           this.lastGeneratedContext.set(typedResponse.context);
@@ -132,7 +128,6 @@ export class ChatWorkspaceMessagesWrapperComponent
       this.isGeneratingSuggestions.set(false);
     }
   }
-  // Использование запасных вариантов
   private useFallbackSuggestions(messages: any[]) {
     const fallbackSuggestions = this.generateFallbackSuggestions(messages);
     this.suggestions.set(fallbackSuggestions);
@@ -141,7 +136,6 @@ export class ChatWorkspaceMessagesWrapperComponent
       this.autoHideSuggestions();
     }
   }
-  // Fallback предложения
   private generateFallbackSuggestions(messages: any[]): string[] {
     if (messages.length === 0) {
       return ['Привет!', 'Здравствуйте!', 'Как дела?'];
@@ -158,7 +152,6 @@ export class ChatWorkspaceMessagesWrapperComponent
       return ['Понятно', 'Интересно', 'Расскажи подробнее', 'Правда?'];
     }
   }
-  // Автоматическое скрытие предложений через время
   private autoHideSuggestions() {
     if (this.suggestionTimer) {
       this.suggestionTimer.unsubscribe();
@@ -169,30 +162,19 @@ export class ChatWorkspaceMessagesWrapperComponent
       }
     });
   }
-  // Обработка отправки сообщения
   async onSendMessage(message: string) {
-    // Отправляем сообщение
     this.chatService.wsAdapter.sendMessage(message, this.chat().id);
-    // Скрываем текущие предложения
     this.showSuggestions.set(false);
-    // Обновляем счетчик сообщений для отслеживания изменений
     this.lastMessageCount = this.messages().length + 1;
-    // Генерируем новые предложения через дебаунс
     this.scheduleSuggestionGeneration();
   }
-  // Обработка выбора предложенного ответа
   async onSelectSuggestion(suggestion: string) {
-    // Отправляем выбранный вариант
     this.chatService.wsAdapter.sendMessage(suggestion, this.chat().id);
-    // Скрываем предложения
     this.showSuggestions.set(false);
     this.suggestions.set([]);
-    // Обновляем счетчик сообщений
     this.lastMessageCount = this.messages().length + 1;
-    // Генерируем новые предложения через дебаунс
     this.scheduleSuggestionGeneration();
   }
-  // Планирование генерации предложений с дебаунсом
   private scheduleSuggestionGeneration() {
     if (this.suggestionTimer) {
       this.suggestionTimer.unsubscribe();
@@ -201,20 +183,15 @@ export class ChatWorkspaceMessagesWrapperComponent
       await this.generateSuggestions();
     });
   }
-  // Обработка отправки пользовательского сообщения
   async onSendCustomMessage(message: string) {
     await this.onSendMessage(message);
   }
-  // Проверяем изменения в сообщениях
   private checkForMessageChanges() {
     const currentCount = this.messages().length;
-    // Если количество сообщений изменилось
     if (currentCount !== this.lastMessageCount) {
       this.lastMessageCount = currentCount;
-      // Генерируем новые предложения, но только если это получатель
       const participants = this.getParticipantsInfo();
       if (participants) {
-        // Проверяем последнее сообщение - если оно от нас, не генерируем
         const lastMessage = this.messages()[currentCount - 1];
         if (lastMessage && !lastMessage.isMine) {
           this.scheduleSuggestionGeneration();
@@ -222,31 +199,25 @@ export class ChatWorkspaceMessagesWrapperComponent
       }
     }
   }
-  // Инициализация
   ngOnInit() {
     const me = this.profileService.me();
     if (me) {
       this.currentUserId.set(me.id.toString());
       this.lastMessageCount = this.messages().length;
-      // Начальная генерация предложений
       this.scheduleSuggestionGeneration();
     }
   }
-  // Очистка
   ngOnDestroy() {
     if (this.suggestionTimer) {
       this.suggestionTimer.unsubscribe();
     }
   }
-  // Метод для принудительной генерации предложений (можно вызвать извне)
   refreshSuggestions() {
     this.scheduleSuggestionGeneration();
   }
-  // Метод для скрытия предложений
   hideSuggestions() {
     this.showSuggestions.set(false);
   }
-  // Остальные методы (resize и т.д.)
   @HostListener('window:resize')
   onWindowResize() {
     this.resizeFeed();

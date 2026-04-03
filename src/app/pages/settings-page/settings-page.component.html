@@ -1,5 +1,5 @@
-@if(profileService.me(); as profile){
-<app-profile-header [profile]="profile"></app-profile-header>
+@if (profileService.me(); as profile) {
+  <app-profile-header [profile]="profile"></app-profile-header>
 }
 
 <form [formGroup]="formSettings" class="profile-form__wraper">
@@ -51,15 +51,6 @@
     <app-stack-input formControlName="stack"
       ><span class="tt-form-label__text">Навыки</span></app-stack-input
     >
-
-    <app-address
-      [fullAddressControl]="fullAddressControl"
-      [cityControl]="cityControl"
-      [streetControl]="streetControl"
-      [houseControl]="houseControl"
-    >
-      <span class="tt-form-label__text">Адрес</span>
-    </app-address>
   </div>
   <div>
     <div>

@@ -1,10 +1,8 @@
-<!-- chat-workspace-messages-wrapper.component.html -->
 <div class="messages-wrapper">
   @for (message of messages(); track message.id) {
     <app-chat-message [message]="message"></app-chat-message>
   }
 
-  <!-- Показываем предложения ответов ОБОИМ пользователям -->
   @if (showSuggestions() && suggestions().length > 0) {
     <div class="suggestions-container" [class.for-both]="showForBothUsers()">
       <div class="suggestions-header">
@@ -35,7 +33,6 @@
   }
 </div>
 
-<!-- Компонент ввода сообщения -->
 <div class="mt16">
   <app-message-input
     (created)="onSendCustomMessage($event)"
