@@ -1,4 +1,7 @@
 <div class="profile-card__wrapper">
+  <h1 style="text-align: center; padding-bottom: 20px; font-size: 36px">
+    Мои подписчики
+  </h1>
   @for (subscriber of subscribers(); track subscriber.id) {
     <div class="card">
       <app-profile-card [profile]="subscriber"></app-profile-card>
